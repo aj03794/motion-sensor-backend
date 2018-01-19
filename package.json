@@ -1,0 +1,25 @@
+{
+  "name": "iot-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./src/index.js",
+    "docker": "docker container run -p 8080:8002 83268260c84b"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "dotenv": "^4.0.0",
+    "googleapis": "^24.0.0",
+    "hapi": "^17.2.0",
+    "net-ping": "^1.2.1",
+    "node-wifiscanner2": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  }
+}

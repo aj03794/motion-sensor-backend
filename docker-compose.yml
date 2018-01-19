@@ -1,0 +1,10 @@
+# This is the version of docker-compose that is being used
+version: '3'
+
+services:
+  # This is the 'service' that is created by the Dockerfile
+  iot-core:
+    image: iot-core
+    build: .
+    ports:
+      - "4200:4200"
