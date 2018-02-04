@@ -17,16 +17,16 @@ export const createGcpIotCore = ({ client }) => {
     // console.log(gcpClient)
     // console.log(client);
     // console.log(gcpClient.projects.locations.registries.devices.list.toString())
-    // return new Promise((resolve, reject) => {
-      console.log('----->', registryName);
-      console.log('=====>', googleFunction)
-      // callGcpCommand({
-      //   registryName,
-      //   googleFunction,
-      //   resolve,
-      //   reject,
-      // })
-    // })
+    return new Promise((resolve, reject) => {
+      // console.log('----->', registryName);
+      // console.log('=====>', googleFunction.toString())
+      callGcpCommand({
+        registryName,
+        googleFunction,
+        resolve,
+        reject,
+      })
+    })
   }
 
   const callGcpCommand = ({ registryName, googleFunction, resolve, reject }) => {
@@ -36,9 +36,9 @@ export const createGcpIotCore = ({ client }) => {
     // This is done because it was done in
     // https://github.com/GoogleCloudPlatform/nodejs-docs-samples/blob/master/iot/manager/manager.js
     const request = { parent: registryName }
-    // googleFunction(request, (err, data) => {
-    //   err ? reject(err) : resolve(data)
-    // })
+    googleFunction(request, (err, data) => {
+      err ? reject(err) : resolve(data)
+    })
   }
 
 
@@ -54,8 +54,6 @@ export const createGcpIotCore = ({ client }) => {
       registryName,
       googleFunction: client.projects.locations.registries.devices.list,
 		})
-    .then(devices => devices)
-    .catch(e => console.log(e))
   }
 
 }
