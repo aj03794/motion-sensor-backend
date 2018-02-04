@@ -20,14 +20,12 @@ export const createRoutes = ({
 		// config: { auth: 'default' },
 		// Gets all device states for their corresponding deviceId's
 		handler: (req, h) => {
-			console.log('registryName', registryName)
 			return getDevices({
 				// region,
 				// projectId,
 				// registryId,
 				registryName
 			}).then(devices => {
-				console.log('THIS IS DATA', devices.data.devices)
 				const iotDevices = devices.data.devices
 				const res = h.response(JSON.stringify(iotDevices))
 				res.headers = { 'content-type': 'application/json' }
