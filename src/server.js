@@ -42,7 +42,8 @@ const server = new Hapi.Server({
 // Simple function to add routes without having to call server.route every single time
 const addRoute = route => {
   server.route(route)
-	console.log('=====>', route);
+	// console.log('=====>', route);
+	// console.log(route.handler.toString())
 }
 
 

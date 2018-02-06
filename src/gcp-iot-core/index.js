@@ -28,14 +28,16 @@ export const createGcpIotCore = ({ client }) => {
   const gcpCommand = ({ registryName, googleFunction }) => {
     // return Observable.create(observer => observer.next(20))
     return Observable.create(observer => {
-      const request = { parent: registryName }
-      googleFunction(request, (err, data) => {
-        if (err) {
-          return observer.error(err)
-        }
-        // console.log(data);
-        observer.next(data);
-      })
+      // const request = { parent: registryName }
+      // googleFunction(request, (err, data) => {
+      //   if (err) {
+      //     return observer.error(err)
+      //   }
+      //   // console.log(data);
+      //   observer.next(data);
+      // })
+      observer.next(20)
+      // observer.complete();
     })
   }
 
