@@ -4,6 +4,7 @@ import url from 'url'
 require('dotenv').config()
 import Hapi from 'hapi'
 import fs from 'fs'
+import { Observable } from 'rxjs';
 // import Inert from 'inert'
 //
 // import { createLogger } from './logger'
@@ -41,7 +42,7 @@ const server = new Hapi.Server({
 // Simple function to add routes without having to call server.route every single time
 const addRoute = route => {
   server.route(route)
-	// console.log('=====>', route);
+	console.log('=====>', route);
 }
 
 
