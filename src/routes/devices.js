@@ -17,21 +17,18 @@ export const createRoutes = ({
 		path: '/api/devices',
 		handler: (req, h) => {
 			console.log('inside of /api/devices route')
-			const y = (someValue) => {
-				// const iotDevices = devices.data.devices
-				// const res = h.response(JSON.stringify(iotDevices))
-				// res.headers = { 'content-type': 'application/json' }
-				const res = h.response('hello world')
-				return res
-			}
-			// returning an Observable gives a new Observable
-			// return getDevices({ registryName })
-			// 	.subscribe({
-			// 		next: x => y(x),
-			// 		error: err => console.log(err),
-			// 		complete: () => console.log('complete')
-			// 	})
-			return getDevices.take(1).map(x => console.log(x))
+			// returning an Observable gives a new Observable`
+			console.log(req, h)
+			getDevices({ registryName })
+				.subscribe({
+					// This next, error, complete can be broken out to a separate object
+					// to make things simpler
+					next: x => console.log(x),
+					error: err => console.log(err),
+					complete: () => console.log('complete')
+				})
+				return 'hello world'
+			// return getDevices.take(1).map(x => console.log(x))
 
 				// const x = () => {
 				// 	return new Promise((resolve, reject) => {

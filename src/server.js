@@ -25,10 +25,11 @@ import {
 import { createGcpIotCore } from './gcp-iot-core'
 import { getClient } from './gcp-iot-core/connect'
 
+// Env variables necessary to establish a gcp client and make
+// subsequent googleapis function calls
 const port = process.env.PORT
 const projectId = process.env.GCP_PROJECT_ID
 const region = process.env.GCP_REGION
-// const oauthSecret = process.env.GCP_OAUTH_SECRET
 const registryId = process.env.GCP_REGISTRY_ID
 const parentName = `projects/${projectId}/locations/${region}`
 const registryName = `${parentName}/registries/${registryId}`
