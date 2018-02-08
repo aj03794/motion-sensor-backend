@@ -40,11 +40,12 @@ const server = new Hapi.Server({
 	port: 8000
 })
 
+let routeHandler
+
 // Simple function to add routes without having to call server.route every single time
 const addRoute = route => {
   server.route(route)
-	// console.log('=====>', route);
-	// console.log(route.handler.toString())
+	console.log('=====>', route.handler);
 }
 
 
@@ -107,6 +108,7 @@ getClient({
 			// projectId,
 			// registryId,
 			registryName,
+			routeHandler
 		}
 		// createAppRoutes().forEach(addRoute)
 		// createHealthCheckRoutes().forEach(addRoute)

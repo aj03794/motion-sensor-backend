@@ -10,39 +10,41 @@ export const createRoutes = ({
 	const {
 		getDevices
 	} = createGcpIotCore({ client })
+
+	// const routeHandler = (x, {req, h}) => {
+	// 	return
+	// }
+
+	const partialApplicationFunction = data => {
+		return (req, h) => {
+				// console.log(h)
+				const res = h.response(JSON.stringify(data.data.devices))
+				res.headers = { 'content-type': 'application/json' }
+				return res
+			}
+		}
+
+	// sendClientData will hold the function that partialApplicationFunction returns
+	// after it is invoked the first time
+	let sendClientData
+
+
+	getDevices({ registryName })
+		.subscribe({
+			//
+			next: data => {
+				// Sets sendClientData equal to the function that is returned by
+				// partialApplicationFunction when it is first invoked
+				sendClientData = partialApplicationFunction(data)
+				console.log(sendClientData.toString())
+			}
+		})
+
 	return [{
-		// Replacing promises with observables in a REST API seem
-		// to fit very well
 		method: 'GET',
 		path: '/api/devices',
 		handler: (req, h) => {
-			console.log('inside of /api/devices route')
-			// returning an Observable gives a new Observable`
-			console.log(req, h)
-			getDevices({ registryName })
-				.subscribe({
-					// This next, error, complete can be broken out to a separate object
-					// to make things simpler
-					next: x => console.log(x),
-					error: err => console.log(err),
-					complete: () => console.log('complete')
-				})
-				return 'hello world'
-			// return getDevices.take(1).map(x => console.log(x))
-
-				// const x = () => {
-				// 	return new Promise((resolve, reject) => {
-				// 		setTimeout(() => {
-				// 			resolve('hello')
-				// 		}, 1000)
-				// 	})
-				// }
-				// return x().then(y => y)
-				// console.log(x)
-				// x.unsubscribe();
-				// const y =
-			// console.log(x)
-			// return 'hello world';
+			return (sendClientData(req, h));
 		}
 	}]
 }
