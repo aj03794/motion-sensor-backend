@@ -16,16 +16,15 @@ export const createGcpIotCore = ({ client }) => {
 
 
   const gcpCommand = ({ registryName, googleFunction }) => {
-    // return Observable.create(observer => observer.next(20))
     return Observable.create(observer => {
       const request = { parent: registryName }
-      googleFunction(request, (err, data) => {
-        if (err) {
-          return observer.error(err)
-        }
-        // console.log(data);
-        observer.next(data);
-      })
+      // googleFunction(request, (err, data) => {
+      //   if (err) {
+      //     return observer.error(err)
+      //   }
+        observer.next(20)
+        observer.complete()
+      // })
     })
   }
 
@@ -33,6 +32,8 @@ export const createGcpIotCore = ({ client }) => {
   return {
       getDevices: ({
     		registryName,
+        partialApplicationFunction,
+        sendClientData
   		}) => gcpCommand({
         registryName,
         googleFunction: client.projects.locations.registries.devices.list,

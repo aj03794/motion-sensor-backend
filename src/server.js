@@ -24,6 +24,9 @@ import {
 
 import { createGcpIotCore } from './gcp-iot-core'
 import { getClient } from './gcp-iot-core/connect'
+import { partialApplicationFunction, sendClientData} from './utils/hapi-handler'
+import { observer } from './utils/observer-creator'
+import { createSubscription } from './utils/create-subscription'
 
 // Env variables necessary to establish a gcp client and make
 // subsequent googleapis function calls
@@ -37,16 +40,11 @@ const registryName = `${parentName}/registries/${registryId}`
 
 // Why new Hapi.Server and not just Hapi.server
 const server = new Hapi.Server({
-	port: 8000
+	port
 })
 
-let routeHandler
-
 // Simple function to add routes without having to call server.route every single time
-const addRoute = route => {
-  server.route(route)
-	console.log('=====>', route.handler);
-}
+const addRoute = route => server.route(route)
 
 
 // const log = (...args) => server.log.apply(server, args)
@@ -55,15 +53,6 @@ const addRoute = route => {
 // 	log,
 // 	oauthSecret
 // })
-
-// gcpClient()
-// 	.then(client => {
-// 		console.log('client established')
-// 		return gcpClient
-// 	})
-// 	.catch(e => console.log(e))
-
-
 
 export async function provision() {
 
@@ -102,19 +91,14 @@ getClient({
 })
 	.then(client => {
 		const gcpRoutes = {
-			// gcpClient will be a promise until it is resolved
 			client,
-			// region,
-			// projectId,
-			// registryId,
 			registryName,
-			routeHandler
+			partialApplicationFunction,
+			sendClientData,
+			observer,
+			createSubscription
 		}
-		// createAppRoutes().forEach(addRoute)
-		// createHealthCheckRoutes().forEach(addRoute)
 		createDevicesRoutes(gcpRoutes).forEach(addRoute)
-		// createDeviceRoutes(gcpRoutes).forEach(addRoute)
-		// createLampRoutes(gcpRoutes).forEach(addRoute)
 	})
 	.catch(e => console.log(e))
 
