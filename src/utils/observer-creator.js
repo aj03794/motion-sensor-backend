@@ -1,9 +1,9 @@
-export const observer = ({ resolve, reject, sendClientData, partialApplicationFunction, req, h }) => {
+export const observer = ({ resolve, reject, partialApplicationFunction }) => {
   return {
     next: data => {
       console.log('next is called')
-      sendClientData = partialApplicationFunction(data)
-      resolve(sendClientData(req, h))
+      const sendClientData = partialApplicationFunction(data)
+      resolve(sendClientData())
     },
     error: (err) => reject(err),
     complete: () => console.log('Observable completed')

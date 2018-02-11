@@ -15,14 +15,14 @@ import { Observable } from 'rxjs'
 export const createGcpIotCore = ({ client }) => {
 
 
-  const gcpCommand = ({ registryName, googleFunction }) => {
+  const gcpCommand = ({ request, googleFunction }) => {
     return Observable.create(observer => {
-      const request = { parent: registryName }
       googleFunction(request, (err, data) => {
         if (err) {
           return observer.error(err)
         }
         // observer.next(20)
+        // console.log(data.data.devices)
         observer.next(data)
         observer.complete()
       })
@@ -36,9 +36,17 @@ export const createGcpIotCore = ({ client }) => {
         partialApplicationFunction,
         sendClientData
   		}) => gcpCommand({
-        registryName,
+        request:  { parent: registryName },
         googleFunction: client.projects.locations.registries.devices.list,
-  		})
+  		}),
+      getDeviceState: ({
+        registryName,
+        partialApplicationFunction,
+        sendClientData,
+      }) => gcpCommand({
+        request: { name: `${registryName}/devices/esp32_830B20` },
+        googleFunction:  client.projects.locations.registries.devices.states.list,
+      })
     }
 
 }

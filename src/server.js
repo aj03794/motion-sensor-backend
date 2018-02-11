@@ -18,7 +18,7 @@ import {
 	// createAppRoutes,
 	// createHealthCheckRoutes,
 	createDevicesRoutes,
-	// createDeviceRoutes,
+	createDeviceRoutes,
 	// createLampRoutes
 } from './routes'
 
@@ -44,7 +44,10 @@ const server = new Hapi.Server({
 })
 
 // Simple function to add routes without having to call server.route every single time
-const addRoute = route => server.route(route)
+ const addRoute = route => {
+	 console.log(route);
+	 server.route(route)
+}
 
 
 // const log = (...args) => server.log.apply(server, args)
@@ -94,11 +97,11 @@ getClient({
 			client,
 			registryName,
 			partialApplicationFunction,
-			sendClientData,
 			observer,
 			createSubscription
 		}
 		createDevicesRoutes(gcpRoutes).forEach(addRoute)
+		createDeviceRoutes(gcpRoutes).forEach(addRoute)
 	})
 	.catch(e => console.log(e))
 
