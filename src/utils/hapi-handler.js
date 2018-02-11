@@ -5,10 +5,9 @@ export const partialApplicationFunction = data => {
   // this req and h corresponds to the parameters that hapi has in its routes
   return (req, h) => {
     console.log('partialApplicationFunction')
-      const res = h.response(JSON.stringify(data))
-      // const res = h.response(JSON.stringify(data));
+      // const res = h.response(JSON.stringify(data))
+      const res = h.response(JSON.stringify(data.data.devices))
       res.headers = { 'content-type': 'application/json' }
-      console.log(res);
       return res
     }
   }

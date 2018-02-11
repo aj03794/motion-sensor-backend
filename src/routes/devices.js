@@ -27,6 +27,7 @@ export const createRoutes = ({
 				h
 			})
 			.then(res => res)
+			.catch(e => console.log(e))
 				// return 'hello world'
 		}
 	}]
