@@ -33,19 +33,28 @@ export const createGcpIotCore = ({ client }) => {
   return {
       getDevices: ({
     		registryName,
-        partialApplicationFunction,
-        sendClientData
+        partialApplicationFunction
   		}) => gcpCommand({
         request:  { parent: registryName },
         googleFunction: client.projects.locations.registries.devices.list,
   		}),
       getDeviceState: ({
         registryName,
-        partialApplicationFunction,
-        sendClientData,
+        partialApplicationFunction
       }) => gcpCommand({
         request: { name: `${registryName}/devices/esp32_830B20` },
         googleFunction:  client.projects.locations.registries.devices.states.list,
+      }),
+      setDeviceConfig: ({
+        registryName,
+        partialApplicationFunction,
+        data
+      }) => gcpCommand({
+        request: {
+          name: `${registryName}/devices/esp32_830B20`,
+          binaryData: Buffer.from(JSON.stringify(data)).toString('base64')
+        },
+        googleFunction: gcpClient.projects.locations.registries.devices.modifyCloudToDeviceConfig
       })
     }
 
