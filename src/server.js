@@ -5,12 +5,7 @@ require('dotenv').config()
 import Hapi from 'hapi'
 import fs from 'fs'
 import { Observable } from 'rxjs';
-// import Inert from 'inert'
-//
-// import { createLogger } from './logger'
-// const { logHandler, requestLoggerExt } = createLogger()
-//
-// import { createAuthStrategy } from './auth'
+import { createSmartLogger, trackState, reportState } from './smart-logger'
 //
 // These are defined from ./routes/index
 
@@ -44,10 +39,7 @@ const server = new Hapi.Server({
 })
 
 // Simple function to add routes without having to call server.route every single time
- const addRoute = route => {
-	 console.log(route);
-	 server.route(route)
-}
+ const addRoute = route => server.route(route)
 
 
 // const log = (...args) => server.log.apply(server, args)
@@ -68,7 +60,7 @@ export async function provision() {
 	// server.auth.strategy('default', 'jwt')
 
 	try {
-
+		await createSmartLogger()
 		await server.start()
 	}
 		catch (err) {
@@ -98,7 +90,9 @@ getClient({
 			registryName,
 			partialApplicationFunction,
 			observer,
-			createSubscription
+			createSubscription,
+			trackState,
+			reportState
 		}
 		createDevicesRoutes(gcpRoutes).forEach(addRoute)
 		createDeviceRoutes(gcpRoutes).forEach(addRoute)

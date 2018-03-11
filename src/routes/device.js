@@ -11,14 +11,13 @@ export const createRoutes = ({
 }) => {
 	const {
 		getDeviceState,
-		setDeviceConfig,
-		getDeviceConfig
+		setDeviceConfig
 	} = createGcpIotCore({ client })
 
   const extractDeviceStateData = (data, req, h) => {
     const res = h.response(JSON.parse(Buffer.from(data.data.deviceStates[0].binaryData, 'base64')))
     // const res = h.response(JSON.stringify(data.data.deviceStates))
-    res.headers = { 'content-type': 'application/json' }
+    const headers = res.headers = { 'content-type': 'application/json' }
     return res
   }
 
@@ -41,10 +40,10 @@ export const createRoutes = ({
 			payload: { allow: 'application/json' }
 		},
 	  handler: (req, h) => {
-			console.log(Buffer.from(JSON.stringify(req.payload.on)).toString('base64'));
+			// console.log(Buffer.from(JSON.stringify(req.payload.on)).toString('base64'));
 			const { on } = req.payload;
 			console.log('on', on)
-			const data = { on }
+			// const data = { on }
 			console.log('data', data)
 			const binaryData = Buffer.from(JSON.stringify(data)).toString('base64');
 	    return createSubscription({

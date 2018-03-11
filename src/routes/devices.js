@@ -10,7 +10,6 @@ export const createRoutes = ({
 	createSubscription
 }) => {
 	const { getDevices } = createGcpIotCore({ client })
-
 	const extractDevicesData = (data, req, h) => {
 	  const res = h.response(JSON.stringify(data.data.devices))
     res.headers = { 'content-type': 'application/json' }

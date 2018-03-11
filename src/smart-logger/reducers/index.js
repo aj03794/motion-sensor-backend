@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import { stateTracker }
+import { stateTracker } from './state-tracker'
 
-const rootReducer = combineReducers({
-    appState
+export const rootReducer = combineReducers({
+    stateTrackers
 })
