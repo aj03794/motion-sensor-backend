@@ -2,14 +2,14 @@ import { observer } from './observer-creator'
 
 export const createSubscription = ({
   gcpCommand,
-  partialApplicationFunction,
   registryName,
-  createObserver
+  trackState
 }) => {
   return new Promise((resolve, reject) => {
-    gcpCommand({ registryName })
+      trackState({ createSubscription: { gcpCommand: gcpCommand.name, registryName } })
+    gcpCommand({ registryName, trackState })
       .subscribe(
-        observer({ resolve, reject, partialApplicationFunction })
+        observer({ resolve, reject, trackState })
       )
   })
 }

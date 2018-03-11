@@ -11,9 +11,9 @@ export const createRoutes = ({
 }) => {
 	const { getDevices } = createGcpIotCore({ client })
 	const extractDevicesData = (data, req, h) => {
-	  const res = h.response(JSON.stringify(data.data.devices))
-    res.headers = { 'content-type': 'application/json' }
-	  return res
+		  const res = h.response(JSON.stringify(data.data.devices))
+		  res.headers = { 'content-type': 'application/json' }
+		  return res
 	}
 
 	return [{

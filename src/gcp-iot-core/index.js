@@ -15,14 +15,13 @@ import { Observable } from 'rxjs'
 export const createGcpIotCore = ({ client }) => {
 
 
-  const gcpCommand = ({ request, googleFunction }) => {
+  const gcpCommand = ({ request, googleFunction, trackState }) => {
     return Observable.create(observer => {
       googleFunction(request, (err, data) => {
         if (err) {
           return observer.error(err)
         }
-        // observer.next(20)
-        // console.log(data.data.devices)
+        trackState({ gcpCommandFunction: { request: request.name } })
         observer.next(data)
         observer.complete()
       })
@@ -31,19 +30,20 @@ export const createGcpIotCore = ({ client }) => {
 
 
   return {
-      getDevices: ({
-    		registryName,
+  getDevices: ({
+		registryName,
         partialApplicationFunction
-  		}) => gcpCommand({
-        request:  { parent: registryName },
-        googleFunction: client.projects.locations.registries.devices.list,
-  		}),
+		}) => gcpCommand({
+    request:  { parent: registryName },
+    googleFunction: client.projects.locations.registries.devices.list,
+		}),
       getDeviceState: ({
         registryName,
-        partialApplicationFunction
+        trackState
       }) => gcpCommand({
         request: { name: `${registryName}/devices/esp32_830B20` },
         googleFunction:  client.projects.locations.registries.devices.states.list,
+        trackState
       }),
       setDeviceConfig: ({
         registryName,
@@ -55,13 +55,6 @@ export const createGcpIotCore = ({ client }) => {
           binaryData
         },
         googleFunction: client.projects.locations.registries.devices.modifyCloudToDeviceConfig,
-      }),
-      getDeviceConfig: ({
-        registryName,
-        partialApplicationFunction
-      }) => gcpCommand({
-        request: { name: `${registryName}/devices/esp32_830B20`},
-        googleFunction: client.projects.locations.registries.devices.configVersions.list
       })
     }
 

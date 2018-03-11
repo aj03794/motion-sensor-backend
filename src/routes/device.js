@@ -1,5 +1,4 @@
 import { createGcpIotCore } from '../gcp-iot-core'
-const base64img = require('base64-img')
 
 export const createRoutes = ({
 	gcpIotCoreQueue,
@@ -7,17 +6,23 @@ export const createRoutes = ({
 	registryName,
 	partialApplicationFunction,
 	observer,
-	createSubscription
+	createSubscription,
+	trackState,
+	reportState,
+	resetState
 }) => {
 	const {
 		getDeviceState,
 		setDeviceConfig
 	} = createGcpIotCore({ client })
-
+	// trackState({ getDeviceState, setDeviceConfig })
   const extractDeviceStateData = (data, req, h) => {
     const res = h.response(JSON.parse(Buffer.from(data.data.deviceStates[0].binaryData, 'base64')))
     // const res = h.response(JSON.stringify(data.data.deviceStates))
     const headers = res.headers = { 'content-type': 'application/json' }
+	trackState({ extractDeviceStateData: res ? true : false })
+	reportState()
+	resetState()
     return res
   }
 
@@ -27,11 +32,15 @@ export const createRoutes = ({
 		handler: (req, h) => {
 			return createSubscription({
 				gcpCommand: getDeviceState,
-				partialApplicationFunction,
-				registryName
+				registryName,
+				trackState
 			})
 			.then(data => extractDeviceStateData(data, req, h))
-			.catch(e => console.log(e))
+			.catch(e => {
+				console.log(e)
+				reportState()
+				resetState()
+			})
 		}
 	}, {
 	  method: 'POST',
@@ -50,10 +59,10 @@ export const createRoutes = ({
 	      gcpCommand: setDeviceConfig,
 	      partialApplicationFunction,
 	      registryName,
-				binaryData
+		  binaryData
 	    })
 	    .then(data => 'Config successfully updated')
-			.catch(e => console.log(e))
+		.catch(e => console.log(e))
 	  }
 	}]
 }
