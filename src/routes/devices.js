@@ -9,9 +9,7 @@ export const createRoutes = ({
 	observer,
 	createSubscription
 }) => {
-	const {
-		getDevices
-	} = createGcpIotCore({ client })
+	const { getDevices } = createGcpIotCore({ client })
 
 	const extractDevicesData = (data, req, h) => {
 	  const res = h.response(JSON.stringify(data.data.devices))
@@ -26,13 +24,10 @@ export const createRoutes = ({
 			return createSubscription({
 				gcpCommand: getDevices,
 				partialApplicationFunction,
-				registryName,
-				req,
-				h
+				registryName
 			})
 			.then(data => extractDevicesData(data, req, h))
 			.catch(e => console.log(e))
-				// return 'hello world'
 		}
 	}]
 }

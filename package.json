@@ -9,16 +9,18 @@
     "build": "npm run build-server",
     "babel-node": "babel-node --presets=babel-preset-env",
     "start-dev": "nodemon --exec npm run babel-node -- src/index.js",
-    "start":"npm run build && node dist/index.js"
+    "start": "npm run build && node --inspect-brk dist/index.js"
   },
   "keywords": [],
   "author": "Adam Johnston",
   "license": "ISC",
   "dependencies": {
+    "base64-img": "^1.0.4",
     "dotenv": "^4.0.0",
     "googleapis": "^25.0.0",
     "hapi": "^17.2.0",
     "lodash": "^4.17.4",
+    "redux": "^3.7.2",
     "rxjs": "^5.5.6"
   },
   "devDependencies": {
@@ -27,6 +29,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
+    "eslint-config-google": "^0.9.1",
     "mocha": "^5.0.0"
   },
   "babel": {
