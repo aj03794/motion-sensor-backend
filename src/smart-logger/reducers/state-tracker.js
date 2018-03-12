@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { merge } from 'lodash'
+import os from 'os'
 
 export const stateTracker = (state = {}, action) => {
     switch(action.type) {
@@ -10,7 +11,7 @@ export const stateTracker = (state = {}, action) => {
         case 'WRITE':
             console.log('In write')
             console.log('State in write',state)
-            fs.appendFileSync(path.resolve(__dirname, `logs.${Date.now()}.txt`), JSON.stringify(state))
+            fs.appendFileSync(path.resolve(__dirname, `log.txt`), JSON.stringify(state) + os.EOL)
             return state
         case 'RESET':
             console.log('In restart')

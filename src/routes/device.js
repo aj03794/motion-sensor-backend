@@ -17,13 +17,14 @@ export const createRoutes = ({
 	} = createGcpIotCore({ client })
 	// trackState({ getDeviceState, setDeviceConfig })
   const extractDeviceStateData = (data, req, h) => {
-    const res = h.response(JSON.parse(Buffer.from(data.data.deviceStates[0].binaryData, 'base64')))
+	const dataToSend = JSON.parse(Buffer.from(data.data.deviceStates[0].binaryData, 'base64'))
+    const res = h.response(dataToSend)
     // const res = h.response(JSON.stringify(data.data.deviceStates))
     const headers = res.headers = { 'content-type': 'application/json' }
-	trackState({ extractDeviceStateData: res ? true : false })
-	reportState()
-	resetState()
-    return res
+	// trackState({ extractDeviceStateData: {res: res ? true : false, headers, dataToSend } })
+	// reportState()
+	// resetState()
+    return { res, dataToSend, headers }
   }
 
 	return [{
@@ -36,10 +37,15 @@ export const createRoutes = ({
 				trackState
 			})
 			.then(data => extractDeviceStateData(data, req, h))
-			.catch(e => {
-				console.log(e)
+			.then(({ res, dataToSend, headers }) => {
+				trackState({ getDeviceStateResponse: {res: res ? true : false, headers, dataToSend } })
 				reportState()
 				resetState()
+				return res
+			})
+			.catch(e => {
+				trackState({ error: e })
+				console.log(e)
 			})
 		}
 	}, {
